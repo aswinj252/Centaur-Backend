@@ -6,11 +6,12 @@ const DoctorRepositoryInt =(repository) =>{
     const Approve = (id)=>repository.Approve(id)
     const Reject = (id) => repository.Reject(id)
     const Data = (id) => repository.Data(id)
+    const Schedule = (details)=>repository.Schedule(details)
    
  
  
     return{
-        DoctorExist,Create,PendingApproval,Approve,Reject,Data
+        DoctorExist,Create,PendingApproval,Approve,Reject,Data,Schedule
     }
 }
 export default DoctorRepositoryInt

@@ -5,6 +5,7 @@ import authServiceImp from "../../../Services/Admin/AuthService.js"
 import authServiceInt from "../../../../application/Services/Admin/authServiceInt.js"
 import DoctorRepositoryInt from "../../../../application/repositories/Doctor/DoctorRepositoryInt.js"
 import DoctorRepositoryImpl from "../../../database/mongoDb/repositories/Doctor/DoctorRepositoryImpl.js"
+import single from "../../middlewares/multer.js"
 const AdminAuthRouter = (express) =>{
 const router = express.Router()
 const controller = AdminController(AdminRepositoryInt,AdminRepositoryImpl,authServiceInt,authServiceImp,DoctorRepositoryInt,DoctorRepositoryImpl)
@@ -13,6 +14,7 @@ router.route('/login').post(controller.AdminLogin)
 router.route('/pending').get(controller.PendingApproval)
 router.route('/approve/:id').put(controller.ApproveDoctor)
 router.route('/reject/:id').delete(controller.RejectDoctor)
+router.route('/addDepartment').post(single,controller.AddDepartment)
 
 
 return router

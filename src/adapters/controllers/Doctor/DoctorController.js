@@ -1,7 +1,6 @@
 import register from "../../../application/use_case/Doctor/Register.js";
 import login from "../../../application/use_case/Doctor/login.js";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import config from "../../../config/config.js";
+import ScheduleAppointment from "../../../application/use_case/Doctor/ScheduleTime.js";
 
 const DoctorAuthController = (
   DoctorRepositoryInt,
@@ -14,38 +13,22 @@ const DoctorAuthController = (
 
   const createDoctor = async (req, res) => {
     try {
-        console.log(req.body);
       const {  name,
         email,
         specification,
         phone,
         password, } = req.body;
-      console.log(req.file,"files");
+   
+      const documents = req.file
+      console.log(documents,"files");
 
-      const S3 = new S3Client({
-        credentials: {
-          accessKeyId: config.accessKey,
-          secretAccessKey: config.secret,
-        },
-        region: config.region,
-      });
-      const params = {
-        Bucket: config.Bucketname,
-        Key: req.file.originalname,
-        Body: req.file.buffer,
-        contentType: req.file.mimetype,
-      };
-     const document = req.file.originalname
-     console.log(document,"fdfdf");
-      const command = new PutObjectCommand(params);
-      await S3.send(command);
       const response = await register(
         name,
         email,
         specification,
         phone,
         password,
-        document,
+        documents,
         dbRepository,
         authService
       );
@@ -61,13 +44,27 @@ const DoctorAuthController = (
         
         console.log(req.body);
         const {email,password} = req.body;
-        const response = await login(email,password,dbRepository,authService)
+        const response = await login(email,password,dbRepository,authService,res)
         res.json((response))
     } catch (error) {
         console.log(error);
       res.status(500).json({ error: "Internal server error" });
     }
   }
-  return { createDoctor ,Login};
+  const AddAppointment =async(req,res) =>{
+    try {
+      const accessToken = req.cookies.access_token;
+      console.log(accessToken,"access token in schedule");
+      console.log(req.body,"in controlelr");
+      const {selectedStartingTime,selectedEndingTime,slots,selectedDate,docId} = req.body
+      console.log(selectedStartingTime,selectedEndingTime,slots,selectedDate,docId,'in controller');
+      const response = await ScheduleAppointment(selectedStartingTime,selectedEndingTime,slots,selectedDate,docId,dbRepository)
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
+  return { createDoctor ,Login,AddAppointment};
 };
 export default DoctorAuthController;

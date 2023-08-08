@@ -3,6 +3,7 @@ import Pending from "../../../application/use_case/Admin/Pending.js";
 import Approve from "../../../application/use_case/Admin/Approve.js";
 import Reject from "../../../application/use_case/Admin/Reject.js";
 import config from "../../../config/config.js";
+import addDepartment from "../../../application/use_case/Admin/Department.js";
 import nodemailer from 'nodemailer';
 
 
@@ -122,8 +123,23 @@ const AdminController = (AdminRepositoryInt,AdminRepositoryImpl,authServiceInt,a
       
     }
   }
+   const AddDepartment = async(req,res) =>{
+     try {
+      console.log(req.body,req.file,"fiel");
+      const {department,description } = req.body
 
-  return{ AdminLogin,PendingApproval,ApproveDoctor,RejectDoctor}
+
+  const response = await addDepartment(department,description,dbRepository)
+  res.json({response})
+      
+     } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: "Internal server error" });
+
+     }
+   }
+
+  return{ AdminLogin,PendingApproval,ApproveDoctor,RejectDoctor,AddDepartment}
 }
 
 export default AdminController
