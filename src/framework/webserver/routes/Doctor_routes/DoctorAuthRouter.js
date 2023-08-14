@@ -5,7 +5,6 @@ import DoctorRepositoryInt from "../../../../application/repositories/Doctor/Doc
 import authServiceInt from "../../../../application/Services/Doctor/authServiceInt.js"
 import authServiceImp from "../../../Services/Doctor/AuthService.js"
 import single from "../../middlewares/multer.js"
-
 import auth from "../../middlewares/jwtVerify.js"
 
 

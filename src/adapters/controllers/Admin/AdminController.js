@@ -126,10 +126,11 @@ const AdminController = (AdminRepositoryInt,AdminRepositoryImpl,authServiceInt,a
    const AddDepartment = async(req,res) =>{
      try {
       console.log(req.body,req.file,"fiel");
-      const {department,description } = req.body
+      const {department,discription } = req.body
+      console.log(department,discription,"hjhkjhkkajdkjl");
 
 
-  const response = await addDepartment(department,description,dbRepository)
+  const response = await addDepartment(department,discription,dbRepository)
   res.json({response})
       
      } catch (error) {

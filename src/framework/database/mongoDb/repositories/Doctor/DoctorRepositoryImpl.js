@@ -33,6 +33,7 @@ const DoctorRepositoryImpl = () => {
     });
     return newSchedule.save();
   };
+  const verifyUser = (id) =>Doctor.findOne({_id:id})
   return {
     DoctorExist,
     create,
@@ -41,6 +42,7 @@ const DoctorRepositoryImpl = () => {
     Reject,
     Data,
     Schedule,
+    verifyUser
   };
 };
 

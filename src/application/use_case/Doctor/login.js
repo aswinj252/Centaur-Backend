@@ -105,7 +105,7 @@ const login = async (email, password, repository, authService,res) => {
         //     // maxAge: 7 * 24 * 3600000, // 7 days in milliseconds
         //     // secure: true // Enable this on production if you're using HTTPS
         //   });
-        res.cookie('access_token', accessToken, {httpOnly: true, sameSite: 'None' });
+        // res.cookie('access_token', accessToken, {httpOnly: true, sameSite: 'None' });
         res.cookie('refresh_token', refreshToken, { httpOnly: true, secure: true, sameSite: 'None' });
      
     
@@ -114,6 +114,7 @@ const login = async (email, password, repository, authService,res) => {
             auth: true,
             user: true,
             message: "Doctor Authenticated",
+            accessToken
           };
         } else {
           return { status: false, auth: true, user: true, message: "Incorrect Password" };

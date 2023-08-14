@@ -16,16 +16,57 @@ const authServiceImp = () =>{
 
 
       const CreateAccessToken = (id) =>
-    jwt.sign({id}, config.JWT_SecretKey,{ expiresIn: 900 });
+    jwt.sign({id}, config.JWT_SecretKey,{ expiresIn: 120 });
 
   const CreateRefreshToken = (id) =>
     jwt.sign({id}, config.RefreshTokenKey,{ expiresIn: '2d'});
+    
+    
+    const verifyAccess = (token) =>{
+      try {
+        console.log(token);
+          const decodedtoken =  jwt.verify(token,config.JWT_SecretKey)
+           console.log(decodedtoken,"decoded token");
+          return decodedtoken
+      } catch (error) {
+        if (error instanceof jwt.TokenExpiredError) {
+          console.error("Token has expired.");
+         return {expired:true}
+      } else if (error instanceof jwt.JsonWebTokenError) {
+          console.error("Token verification failed.");
+      } else {
+          console.error("An error occurred while verifying the token:", error.message);
+      }
+      return null;
+        
+      }
+   
+    } 
+    const verifyRefresh = (token ) =>{
+      try {
+         const refresh = jwt.verify(token,config.RefreshTokenKey)
+    console.log(refresh,"decoded refresh ");
+    return refresh
+  
+      } catch (error) {
+        if (error instanceof jwt.TokenExpiredError) {
+          console.error("Token has expired.");
+         return {expired:true}
+      } else if (error instanceof jwt.JsonWebTokenError) {
+          console.error("Token verification failed.");
+      } else {
+          console.error("An error occurred while verifying the token:", error.message);
+      }
+      return null;
+        
+      }
+    }
 
       return {
         bcryptPassword,
         comparePassword,
         CreateAccessToken,
-        CreateRefreshToken
+        CreateRefreshToken,verifyAccess,verifyRefresh
       
       }
 }

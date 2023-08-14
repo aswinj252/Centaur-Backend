@@ -7,11 +7,12 @@ const DoctorRepositoryInt =(repository) =>{
     const Reject = (id) => repository.Reject(id)
     const Data = (id) => repository.Data(id)
     const Schedule = (details)=>repository.Schedule(details)
+    const verifyUser = (id) => repository.verifyUser(id)
    
  
  
     return{
-        DoctorExist,Create,PendingApproval,Approve,Reject,Data,Schedule
+        DoctorExist,Create,PendingApproval,Approve,Reject,Data,Schedule,verifyUser
     }
 }
 export default DoctorRepositoryInt

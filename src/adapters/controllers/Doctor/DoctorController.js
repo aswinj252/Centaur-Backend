@@ -53,8 +53,10 @@ const DoctorAuthController = (
   }
   const AddAppointment =async(req,res) =>{
     try {
-      const accessToken = req.cookies.access_token;
-      console.log(accessToken,"access token in schedule");
+      console.log(req.cookies,"cookies");
+      const accessToken = req.cookies.refresh_token
+      console.log(accessToken,"refresh token ");
+  
       console.log(req.body,"in controlelr");
       const {selectedStartingTime,selectedEndingTime,slots,selectedDate,docId} = req.body
       console.log(selectedStartingTime,selectedEndingTime,slots,selectedDate,docId,'in controller');
