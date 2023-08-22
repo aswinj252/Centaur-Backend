@@ -9,10 +9,11 @@ const ScheduleAppointment = async (
 ) => {
     // console.log(res.cookies.access_token,"access token in schedule");
     console.log(startingTime, endingTime, slots, date, docId,"inusecase");
-  const Details = ScheduleEntity(startingTime, endingTime, slots, date, docId);
+   const Details = ScheduleEntity(startingTime, endingTime, slots, date, docId);
   console.log(Details, "in usecase");
   const newAppontment = await dbRepository.Schedule(Details);
-  console.log(newAppontment);
+  console.log(newAppontment,"hahghah");
+  return {newAppontment}
 };
 
 export default ScheduleAppointment;

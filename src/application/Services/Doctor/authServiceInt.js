@@ -5,6 +5,7 @@ const authServiceInt = (repositories)  =>{
     const createRefreshToken = (id) => repositories.CreateRefreshToken(id)
     const verifyToken = (token)=> repositories.verifyAccess(token)
     const verifyRefresh = (token ) => repositories.verifyRefresh(token)
-    return {BcryptPassword,comparePassword,createRefreshToken,createAccessToken,verifyToken,verifyRefresh}
+    const CreateNewToken = (id) => repositories.CreateNewToken(id)
+    return {BcryptPassword,comparePassword,createRefreshToken,createAccessToken,verifyToken,verifyRefresh,CreateNewToken}
 }
 export default authServiceInt

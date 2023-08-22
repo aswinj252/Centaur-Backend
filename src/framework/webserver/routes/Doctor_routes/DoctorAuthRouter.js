@@ -16,7 +16,9 @@ const DoctorAuthRouter = (express) =>{
 
 router.route('/signup') .post(single,Controller.createDoctor)
 router.route('/login' ) .post(Controller.Login)
+router.route('/docDetails/:id').get(Controller.getDetails)
 router.route('/addApponitment') . post(auth, Controller.AddAppointment)
+router.route('/refreshToken') .get(Controller.RefreshToken)
 
 
 return router

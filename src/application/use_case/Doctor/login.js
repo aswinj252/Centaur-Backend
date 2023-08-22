@@ -114,7 +114,7 @@ const login = async (email, password, repository, authService,res) => {
             auth: true,
             user: true,
             message: "Doctor Authenticated",
-            accessToken
+            accessToken,id,Doctor
           };
         } else {
           return { status: false, auth: true, user: true, message: "Incorrect Password" };

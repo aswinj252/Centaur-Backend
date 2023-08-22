@@ -17,6 +17,18 @@ const authServiceImp = () =>{
 
       const CreateAccessToken = (id) =>
     jwt.sign({id}, config.JWT_SecretKey,{ expiresIn: 120 });
+     
+    const CreateNewToken =(id) =>{
+      console.log(id,"idddd");
+      const newAccessTokenPayload = {
+        id: id,
+        iat: Math.floor(Date.now() / 1000), // Current timestamp
+        exp: Math.floor(Date.now() / 1000) + (2 * 60) // Expiration in 2 minutes
+      };
+      const newTOken =  jwt.sign(newAccessTokenPayload, config.JWT_SecretKey);
+      return newTOken
+
+    }
 
   const CreateRefreshToken = (id) =>
     jwt.sign({id}, config.RefreshTokenKey,{ expiresIn: '2d'});
@@ -66,7 +78,7 @@ const authServiceImp = () =>{
         bcryptPassword,
         comparePassword,
         CreateAccessToken,
-        CreateRefreshToken,verifyAccess,verifyRefresh
+        CreateRefreshToken,verifyAccess,verifyRefresh,CreateNewToken
       
       }
 }

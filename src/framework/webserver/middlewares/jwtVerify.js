@@ -28,7 +28,7 @@ const auth = async (req, res, next) => {
         const authenticated = await repository.verifyUser(decoded.id);
         if (authenticated) {
           console.log("authenticated",authenticated);
-          res.json({authenticated})
+          // res.json({authenticated, expired:false})
           next();
         } else {
           console.log("invalid user");
@@ -36,20 +36,20 @@ const auth = async (req, res, next) => {
       } else if (!decoded.id && decoded.expired === true) {
        
 
-       const refreshToken = req.cookies.refresh_token
-       console.log(refreshToken,"78878787878787877");
-       if (refreshToken) {
-      const  decodedToken =  authService.verifyRefresh(refreshToken)
-      console.log(decodedToken,"refresh1111");
+      //  const refreshToken = req.cookies.refresh_token
+      //  console.log(refreshToken,"78878787878787877");
+      //  if (refreshToken) {
+      // const  decodedToken =  authService.verifyRefresh(refreshToken)
+      // console.log(decodedToken,"refresh1111");
 
-      const newToken = authService.createAccessToken(decodedToken)
-      console.log(newToken,"454545454545454");
-        return res.json({ message: "token expired and new token is " ,newToken });
-       }else{
-        res.json ({message:"unauthorized"})
-       }
+      // const newToken = authService.createAccessToken(decodedToken)
+      // console.log(newToken,"454545454545454");
+      //   return res.json({ message: "token expired and new token is " ,newToken });
+      //  }else{
+      //   res.json ({message:"unauthorized"})
+      //  }
         
-       
+       res.json({message:"token expired",expired:true})
        
 
 

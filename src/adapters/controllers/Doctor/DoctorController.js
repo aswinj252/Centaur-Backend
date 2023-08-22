@@ -1,6 +1,8 @@
 import register from "../../../application/use_case/Doctor/Register.js";
 import login from "../../../application/use_case/Doctor/login.js";
 import ScheduleAppointment from "../../../application/use_case/Doctor/ScheduleTime.js";
+import DocDetails from "../../../application/use_case/Doctor/DocDetails.js";
+import splitTime from "../../../application/use_case/Doctor/splitTime.js";
 
 const DoctorAuthController = (
   DoctorRepositoryInt,
@@ -60,13 +62,47 @@ const DoctorAuthController = (
       console.log(req.body,"in controlelr");
       const {selectedStartingTime,selectedEndingTime,slots,selectedDate,docId} = req.body
       console.log(selectedStartingTime,selectedEndingTime,slots,selectedDate,docId,'in controller');
-      const response = await ScheduleAppointment(selectedStartingTime,selectedEndingTime,slots,selectedDate,docId,dbRepository)
-      console.log(response);
+      const responsee = await ScheduleAppointment(selectedStartingTime,selectedEndingTime,slots,selectedDate,docId,dbRepository)
+      console.log(responsee,"fafadfaf");
+      if (responsee){
+        const {startingTime,endingTime,slots,date,docId,id} = responsee.newAppontment
+        console.log(startingTime,endingTime,slots,date,docId,id);
+        const Time = await splitTime(startingTime,endingTime,slots,date,docId,id,dbRepository)
+    console.log(Time)
+        
+      }
+      res.json({responsee ,message:"authenticated",expired:false})
     } catch (error) {
       console.log(error);
       
     }
   }
-  return { createDoctor ,Login,AddAppointment};
+  const RefreshToken = async(req,res)=>{
+    const refreshToken = req.cookies.refresh_token
+      console.log(refreshToken,"78878787878787877");
+      if (refreshToken) {
+     const  decodedToken =  authService.verifyRefresh(refreshToken)
+     console.log(decodedToken,"refresh1111");
+
+     const newToken = authService.CreateNewToken(decodedToken.id)
+     console.log(newToken,"454545454545454");
+       return res.json({ message: "token expired and new token is " ,newToken });
+      }else{
+      res.json ({message:"unauthorized token"})
+      }
+  }
+  const getDetails = async(req,res) =>{
+    try {
+      const id = req.params.id 
+    console.log(id,"idididididii");  
+    const docDetails = await DocDetails(id, dbRepository)
+    console.log(docDetails,"jhjhjhjhjhjhjhjhjhjhjjh");
+    return res.json({docDetails})
+    } catch (error) {
+      console.log(error);
+    }
+    
+  }
+  return { createDoctor ,Login,AddAppointment,RefreshToken,getDetails};
 };
 export default DoctorAuthController;
