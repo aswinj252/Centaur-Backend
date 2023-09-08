@@ -3,6 +3,9 @@ import login from "../../../application/use_case/Doctor/login.js";
 import ScheduleAppointment from "../../../application/use_case/Doctor/ScheduleTime.js";
 import DocDetails from "../../../application/use_case/Doctor/DocDetails.js";
 import splitTime from "../../../application/use_case/Doctor/splitTime.js";
+import ScheduleNAppointment from "../../../application/use_case/Doctor/ScheduleNAppointment.js";
+import Departments from "../../../application/use_case/Doctor/Departments.js";
+import Edit from "../../../application/use_case/Doctor/Edit.js";
 
 const DoctorAuthController = (
   DoctorRepositoryInt,
@@ -15,9 +18,10 @@ const DoctorAuthController = (
 
   const createDoctor = async (req, res) => {
     try {
+      console.log(req.body);
       const {  name,
         email,
-        specification,
+        specification,department,
         phone,
         password, } = req.body;
    
@@ -28,6 +32,7 @@ const DoctorAuthController = (
         name,
         email,
         specification,
+        department,
         phone,
         password,
         documents,
@@ -55,14 +60,11 @@ const DoctorAuthController = (
   }
   const AddAppointment =async(req,res) =>{
     try {
-      console.log(req.cookies,"cookies");
-      const accessToken = req.cookies.refresh_token
-      console.log(accessToken,"refresh token ");
-  
+    
       console.log(req.body,"in controlelr");
-      const {selectedStartingTime,selectedEndingTime,slots,selectedDate,docId} = req.body
-      console.log(selectedStartingTime,selectedEndingTime,slots,selectedDate,docId,'in controller');
-      const responsee = await ScheduleAppointment(selectedStartingTime,selectedEndingTime,slots,selectedDate,docId,dbRepository)
+      const {selectedStartingTime,selectedEndingTime,slots,selectedDate,docid} = req.body
+      console.log(selectedStartingTime,selectedEndingTime,slots,selectedDate,docid,'in controller');
+      const responsee = await ScheduleAppointment(selectedStartingTime,selectedEndingTime,slots,selectedDate,docid,dbRepository)
       console.log(responsee,"fafadfaf");
       if (responsee){
         const {startingTime,endingTime,slots,date,docId,id} = responsee.newAppontment
@@ -71,7 +73,20 @@ const DoctorAuthController = (
     console.log(Time)
         
       }
-      res.json({responsee ,message:"authenticated",expired:false})
+      res.json({responsee ,message:"New Video Appointment added",expired:false})
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
+
+  const Appointment = async (req,res) =>{
+    try {
+      console.log(req.body,"ha i da ")
+      const {selectedStartingTime,selectedEndingTime,slots,selectedDate,docId} = req.body
+      console.log(selectedStartingTime,selectedEndingTime,slots,selectedDate,docId,'in controller');
+      const response = await ScheduleNAppointment(selectedStartingTime,selectedEndingTime,slots,selectedDate,docId,dbRepository)
+      return res.json({response,success:true,message:"new Time added"})
     } catch (error) {
       console.log(error);
       
@@ -83,12 +98,17 @@ const DoctorAuthController = (
       if (refreshToken) {
      const  decodedToken =  authService.verifyRefresh(refreshToken)
      console.log(decodedToken,"refresh1111");
-
-     const newToken = authService.CreateNewToken(decodedToken.id)
+ if (decodedToken && decodedToken.status !== true){
+ const newToken = authService.CreateNewToken(decodedToken.id)
      console.log(newToken,"454545454545454");
        return res.json({ message: "token expired and new token is " ,newToken });
+ }
+ else{
+  return res.json({message:"token expired", refreshTokenExpired: true})
+ }
+    
       }else{
-      res.json ({message:"unauthorized token"})
+      res.json ({message:"unauthorized access", noToken:true})
       }
   }
   const getDetails = async(req,res) =>{
@@ -103,6 +123,29 @@ const DoctorAuthController = (
     }
     
   }
-  return { createDoctor ,Login,AddAppointment,RefreshToken,getDetails};
+  const  getDepartments = async(req,res) =>{
+try {
+  const departments = await Departments(dbRepository)
+  return res.json({departments})
+} catch (error) {
+  console.log(error);
+}
+  }
+  const EditDetails = async(req,res) =>{
+
+    try {
+      const id = req.params.id
+      console.log(req.body);
+      const {name,email,phone,specilization,department} = req.body
+      console.log(name,email,phone,specilization,department,"omgad");
+      const editDetails = await Edit( id,name,email,phone,specilization,department,dbRepository)
+      console.log(editDetails);
+      res.json({editDetails})
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  return { createDoctor ,Login,AddAppointment,RefreshToken,getDetails,Appointment,getDepartments,EditDetails};
 };
 export default DoctorAuthController;

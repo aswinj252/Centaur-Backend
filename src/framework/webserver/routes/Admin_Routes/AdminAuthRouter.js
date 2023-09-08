@@ -15,6 +15,8 @@ router.route('/pending').get(controller.PendingApproval)
 router.route('/approve/:id').put(controller.ApproveDoctor)
 router.route('/reject/:id').delete(controller.RejectDoctor)
 router.route('/addDepartment').post(single,controller.AddDepartment)
+router.route('/allDep').get(controller.Alldepartment)
+router.route('/allDoc').get(controller.AllApprovedDoc)
 
 
 return router

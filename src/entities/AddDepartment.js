@@ -1,7 +1,8 @@
-const AddDepartment = (department,desctiption) =>{
+const AddDepartment = (department,desctiption,picture) =>{
     return {
         getDepartment:() => department,
-        getDescription:() => desctiption
+        getDescription:() => desctiption,
+        getPicture:() => picture
     }
 
 }

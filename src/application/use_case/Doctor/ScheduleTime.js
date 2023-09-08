@@ -9,7 +9,8 @@ const ScheduleAppointment = async (
 ) => {
     // console.log(res.cookies.access_token,"access token in schedule");
     console.log(startingTime, endingTime, slots, date, docId,"inusecase");
-   const Details = ScheduleEntity(startingTime, endingTime, slots, date, docId);
+    const Apptype ="VideoBooking"
+   const Details = ScheduleEntity(startingTime, endingTime, slots, date, docId,Apptype);
   console.log(Details, "in usecase");
   const newAppontment = await dbRepository.Schedule(Details);
   console.log(newAppontment,"hahghah");

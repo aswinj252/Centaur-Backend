@@ -10,11 +10,13 @@ const DoctorRepositoryInt =(repository) =>{
     const verifyUser = (id) => repository.verifyUser(id)
     const data = (id) => repository.data(id)
     const split = (data) => repository.split(data)
+    const AllDepartments = () => repository.AllDepartments()
+    const EditDetails = (id,name,email,phone,specilization,department) => repository.EditDetails(id,name,email,phone,specilization,department)
    
  
  
     return{
-        DoctorExist,Create,PendingApproval,Approve,Reject,Data,Schedule,verifyUser,data,split
+        DoctorExist,Create,PendingApproval,Approve,Reject,Data,Schedule,verifyUser,data,split,AllDepartments,EditDetails
     }
 }
 export default DoctorRepositoryInt

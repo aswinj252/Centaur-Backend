@@ -9,6 +9,10 @@ const doctorSchema = new mongoose.Schema({
     type: String,
    
   },
+  department: {
+    type: String,
+    
+  },
   email: {
     type: String,
     required: true
@@ -26,15 +30,17 @@ const doctorSchema = new mongoose.Schema({
     type: String,
   
   },
-  department: {
-    type: mongoose.Schema.Types.ObjectId,
-    
-  },
-  VideoData: {
-    type: mongoose.Schema.Types.ObjectId,
+ 
+  picture: {
+    type: String,
+    required:true
    
   },
-  status:{
+  reviewed:{
+    type:String,
+    required:true
+  },
+  approved:{
     type:String,
     required:true
   },

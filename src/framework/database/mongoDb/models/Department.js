@@ -9,6 +9,10 @@ const DepartmentSchema = new mongoose.Schema({
         type:String,
         required:true
       },
+      picture:{
+        type:String,
+        required:true
+      },
       createdAt: {
         type: Date,
         default: Date.now
@@ -16,6 +20,9 @@ const DepartmentSchema = new mongoose.Schema({
       updatedAt: {
         type: Date,
         default: Date.now
+      },url: {
+        type: String,
+        required:true
       }
 });
 

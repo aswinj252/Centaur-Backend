@@ -2,23 +2,22 @@ const DoctorEntity = (
   name,
   email,
   speciality,
+  department,
   phone,
   password,
   document,
-  department,
-  videoData,
-  status
+  picture,
 ) => {
   return {
     getName: () => name,
     getSpeciality: () => speciality,
+    getDepartment: () => department,
     getEmail: () => email,
     getPhone: () => phone,
     getPassword: () => password,
     getDocument: () => document,
-    getDepartment: () => department,
-    getVideoData: () => videoData,
-    getStatus: () => status,
+    getPicture: () => picture,
+    // getStatus: () => status,
   };
 };
 export default DoctorEntity;

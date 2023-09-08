@@ -15,8 +15,13 @@ const scheduleSchema = new mongoose.Schema({
     },
     docId:{
         type: String,
-    // required: true
-    },createdAt: {
+    required: true
+    },
+    type:{
+        type:String,
+        required:true
+    },
+    createdAt: {
         type: Date,
         default: Date.now
       },

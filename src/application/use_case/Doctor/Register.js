@@ -4,15 +4,13 @@ import config from "../../../config/config.js";
 
 const register = async ( name,
     email,
-    specification,
+    specification,department,
     phone,
     password,
     document,repositories,authService) => {
   return repositories.DoctorExist(email).then(async (doctor) => {
     if (!doctor) {
-
-
-
+      
       console.log(document.buffer,document.originalname,"re desighRS");
       
       const S3 = new S3Client({
@@ -34,14 +32,16 @@ const register = async ( name,
 
         
       const HashPassword = await authService.BcryptPassword(password);
-     
+      const picture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvkpRbsObBju8Hsn3FuRLm_UdfTy_HFuWM6Z15Y2DSu-7yxqn8rJy_zoKhMAAI6PhWbpo&usqp=CAU"
       const DoctorDetails = DoctorEntity(
         name,
         email,
         specification,
+        department,
         phone,
         HashPassword,
         document.originalname,
+        picture
       )
     
       const NewDoctor = await repositories.Create(DoctorDetails);

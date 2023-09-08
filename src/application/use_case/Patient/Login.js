@@ -9,13 +9,14 @@ const Login = async(email,password,repositories,authService) =>{
   if(User !=null){
     console.log(id,"id for jwt");
  
-    const Password=await authService.comparePassword(password,User.password)
+    const Password=await authService.comparePassword(password,User.password,res)
         if(Password){
           const accessToken = await authService.createAccessToken(id) 
-          const refrestToken = await authService.createRefreshToken(id )
+          const refreshToken = await authService.createRefreshToken(id )
             console.log("true");
 
-            return({status:true,user:true,refrestToken,accessToken,message:"user Exist"})
+            res.cookie('refresh_token', refreshToken, { httpOnly: true, secure: true, sameSite: 'None' });
+            return({status:true,user:true,accessToken,message:"user Exist"})
             
         }else{
             console.log("false");

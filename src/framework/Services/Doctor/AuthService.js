@@ -54,6 +54,10 @@ const authServiceImp = () =>{
       }
    
     } 
+    const getDetails = (token) =>{
+      const decodedtoken =  jwt.verify(token,config.JWT_SecretKey)
+      return decodedtoken.id
+    }
     const verifyRefresh = (token ) =>{
       try {
          const refresh = jwt.verify(token,config.RefreshTokenKey)
@@ -78,7 +82,8 @@ const authServiceImp = () =>{
         bcryptPassword,
         comparePassword,
         CreateAccessToken,
-        CreateRefreshToken,verifyAccess,verifyRefresh,CreateNewToken
+        CreateRefreshToken,verifyAccess,verifyRefresh,CreateNewToken,getDetails
+
       
       }
 }

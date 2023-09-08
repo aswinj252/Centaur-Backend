@@ -18,8 +18,10 @@ router.route('/signup') .post(single,Controller.createDoctor)
 router.route('/login' ) .post(Controller.Login)
 router.route('/docDetails/:id').get(Controller.getDetails)
 router.route('/addApponitment') . post(auth, Controller.AddAppointment)
+router.route('/addNApponitment') .post(auth,Controller.Appointment)
+router.route('/editDetails/:id').put(Controller.EditDetails)
 router.route('/refreshToken') .get(Controller.RefreshToken)
-
+router.route('/departments').get(Controller.getDepartments)
 
 return router
 

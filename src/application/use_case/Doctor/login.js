@@ -79,7 +79,7 @@ const login = async (email, password, repository, authService,res) => {
     const Doctor = await repository.DoctorExist(email);
   
     if (Doctor != null) {
-      if (Doctor.status === "true") {
+      if (Doctor.approved === "true") {
         const id = Doctor._id.toString();
   
         const Password = await authService.comparePassword(password, Doctor.password);
