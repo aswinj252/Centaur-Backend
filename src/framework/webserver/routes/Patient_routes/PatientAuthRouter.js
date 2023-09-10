@@ -11,6 +11,9 @@ const PatientAuthRouter = (express) =>{
 
     router.route('/signup').post(controller.createPatient)
     router.route('/login').post(controller.patientLogin)
+    router.route('/allDep').get(controller.getDepartments)
+    router.route('/allDoc').get(controller.getDoctors)
+    router.route('/docDetails/:id').get(controller.getDocDetails)
     return router
 }
 export default PatientAuthRouter

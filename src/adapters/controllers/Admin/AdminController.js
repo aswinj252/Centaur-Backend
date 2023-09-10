@@ -13,12 +13,11 @@ const AdminController = (
   AdminRepositoryImpl,
   authServiceInt,
   authServiceImp,
-  DoctorRepositoryInt,
-  DoctorRepositoryImpl
+ 
 ) => {
   const dbRepository = AdminRepositoryInt(AdminRepositoryImpl());
   const authService = authServiceInt(authServiceImp());
-  const docrep = DoctorRepositoryInt(DoctorRepositoryImpl());
+ 
 
   const AdminLogin = async (req, res) => {
     try {
@@ -34,7 +33,7 @@ const AdminController = (
   };
   const PendingApproval = async (req, res) => {
     try {
-      const response = await Pending(docrep);
+      const response = await Pending(dbRepository);
 
       res.json({ response });
     } catch (error) {
@@ -45,7 +44,7 @@ const AdminController = (
   const ApproveDoctor = async (req, res) => {
     try {
       const id = req.params.id;
-      const response = await Approve(id, docrep);
+      const response = await Approve(id, dbRepository);
       const email = response.data.email;
       const name = response.data.name;
 
@@ -82,7 +81,7 @@ const AdminController = (
     try {
       const id = req.params.id;
       console.log(id);
-      const response = await Reject(id, docrep);
+      const response = await Reject(id, dbRepository);
       const email = response.data.email;
       const name = response.data.name;
 

@@ -1,5 +1,8 @@
 import register from "../../../application/use_case/Patient/Register.js";
 import Login from "../../../application/use_case/Patient/Login.js";
+import Departments from "../../../application/use_case/Patient/Departments.js";
+import Doctors from "../../../application/use_case/Patient/Doctors.js";
+import DocDetails from "../../../application/use_case/Patient/DocDetails.js";
 
 const PatientAuthController = (
   PatientRepositoryInt,
@@ -49,8 +52,41 @@ const PatientAuthController = (
       res.status(500).json({ error: "Internal server error" });
     }
   };
-
-  return { createPatient, patientLogin };
+  const getDepartments = async(req,res) =>{
+    try {
+      const departments= await Departments(dbRepository)
+      console.log(departments);
+      res.json({departments})
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal server error" });
+      
+    }
+  }
+  const getDoctors = async (req,res) =>{
+    try {
+      const doctors = await  Doctors(dbRepository)
+      res.json({doctors})
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal server error" });
+      
+    }
+  }
+  const getDocDetails = async (req,res) =>{
+    try {
+      const id = req.params.id
+      console.log(id);
+      const Details = await DocDetails(id,dbRepository)
+      res.json({Details})
+      
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal server error" });
+      
+    }
+  }
+  return { createPatient, patientLogin,getDepartments,getDoctors,getDocDetails};
 };
 
 export default PatientAuthController;
