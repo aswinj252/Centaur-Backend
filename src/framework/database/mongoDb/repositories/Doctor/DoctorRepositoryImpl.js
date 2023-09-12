@@ -57,6 +57,7 @@ const DoctorRepositoryImpl = () => {
       docId: entry.docId, // Verify property names here
       Id: entry.Id, // Verify property names here
       booked: false,
+      type:entry.type
     }));
     console.log(modifiedData.date, "modifiedData");
 

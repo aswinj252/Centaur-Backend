@@ -5,7 +5,8 @@ const TimeEntity = (eventArray) => {
             getDate: () => event.date,
             getTime: () => event.time,
             getDocId: () => event.docId,
-            getAppId: () => event.Id
+            getAppId: () => event.Id,
+            getType:() => event.type
         };
     });
 

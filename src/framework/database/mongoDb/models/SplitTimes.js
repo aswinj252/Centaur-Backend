@@ -19,7 +19,12 @@ const SplitSchema = new mongoose.Schema({
     Id:{
         type: String,
        required: true
-    },createdAt: {
+    },
+    type:{
+        type: String,
+       required: true
+    },
+    createdAt: {
         type: Date,
         default: Date.now
       },

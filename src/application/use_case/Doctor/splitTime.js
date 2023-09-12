@@ -24,8 +24,9 @@ const splitTime = async(startingTime,endingTime,slots,date,docId,id,repository)=
         const slotStartTime = currentSlot.format('h:mm A');
         currentSlot.add(slotDuration, 'minutes');
         const slotEndTime = currentSlot.format('h:mm A');
+        const type = "videoBooking"
     
-        slot.push({date ,time: slotStartTime,docId,Id:id });
+        slot.push({date ,time: slotStartTime,docId,Id:id,type });
       }
     
       console.log(slot,"slot");

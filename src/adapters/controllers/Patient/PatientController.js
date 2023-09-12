@@ -3,6 +3,8 @@ import Login from "../../../application/use_case/Patient/Login.js";
 import Departments from "../../../application/use_case/Patient/Departments.js";
 import Doctors from "../../../application/use_case/Patient/Doctors.js";
 import DocDetails from "../../../application/use_case/Patient/DocDetails.js";
+import AppointmentTime from "../../../application/use_case/Patient/AppointmentTime.js";
+import { json } from "express";
 
 const PatientAuthController = (
   PatientRepositoryInt,
@@ -86,7 +88,27 @@ const PatientAuthController = (
       
     }
   }
-  return { createPatient, patientLogin,getDepartments,getDoctors,getDocDetails};
+  const getVideoAppointmentTime = async ( req,res) =>{
+ try {
+  console.log(req.query);
+ const{id, convertedDate} =  req.query
+ console.log(id, convertedDate,"jaiiii");
+  const appointmetTime = await AppointmentTime(id, convertedDate,dbRepository)
+  console.log(appointmetTime,"haiiii");
+  if (appointmetTime.Time.length === 0) {
+    console.log("no appontment on this date");
+    res.json({message:"No appontment on the selected date .Please choose another date ",noAppointment:true})
+  }
+  else {
+    console.log("these are the appointment"); 
+    res.json({appointmetTime,noAppointment:false})
+  }
+  
+ } catch (error) {console.log(error);
+  
+ }
+  }
+  return { createPatient, patientLogin,getDepartments,getDoctors,getDocDetails,getVideoAppointmentTime};
 };
 
 export default PatientAuthController;
