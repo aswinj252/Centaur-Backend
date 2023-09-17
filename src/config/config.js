@@ -13,7 +13,9 @@ export default {
   region:process.env.BUCKET_REGION,
   Bucketname:process.env.BUCKET_NAME,
   EmailPassword:process.env.EmailPassword,
-  Email:process.env.Email
+  Email:process.env.Email,
+  StripeSk:process.env.StripeSecretKey,
+  StripePk:process.env.StripePublicKey
 
 
 

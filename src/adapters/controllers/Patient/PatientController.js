@@ -4,7 +4,9 @@ import Departments from "../../../application/use_case/Patient/Departments.js";
 import Doctors from "../../../application/use_case/Patient/Doctors.js";
 import DocDetails from "../../../application/use_case/Patient/DocDetails.js";
 import AppointmentTime from "../../../application/use_case/Patient/AppointmentTime.js";
-import { json } from "express";
+import GetPk from "../../../application/use_case/Patient/GetPrivateKey.js";
+import createIntent from "../../../application/use_case/Patient/CreateIntent.js";
+
 
 const PatientAuthController = (
   PatientRepositoryInt,
@@ -46,6 +48,7 @@ const PatientAuthController = (
         password,
         dbRepository,
         authService
+        ,res
       );
       
       res.json({ response });
@@ -108,7 +111,37 @@ const PatientAuthController = (
   
  }
   }
-  return { createPatient, patientLogin,getDepartments,getDoctors,getDocDetails,getVideoAppointmentTime};
+
+  const BookAppointment = (req,res) =>{
+    try {
+      
+      console.log(req.body,"body");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  const getPK = async (req,res) =>{
+    try {
+       const PrivateKey = await GetPk()
+       res.json({PrivateKey})
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
+  const CreateIntent = async(req,res) =>{
+    try {
+      const price = req.body
+      console.log(price);
+      const Intent = await createIntent(price)
+      console.log(Intent);
+      res.json({Intent})
+     
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  return { createPatient, patientLogin,getDepartments,getDoctors,getDocDetails,getVideoAppointmentTime,BookAppointment,getPK,CreateIntent};
 };
 
 export default PatientAuthController;
