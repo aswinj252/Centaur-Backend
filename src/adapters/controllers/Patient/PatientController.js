@@ -6,6 +6,15 @@ import DocDetails from "../../../application/use_case/Patient/DocDetails.js";
 import AppointmentTime from "../../../application/use_case/Patient/AppointmentTime.js";
 import GetPk from "../../../application/use_case/Patient/GetPrivateKey.js";
 import createIntent from "../../../application/use_case/Patient/CreateIntent.js";
+import bookappointment from "../../../application/use_case/Patient/bookAppointment.js";
+
+// backend.js
+import moment from 'moment-timezone';
+
+moment.tz.setDefault('Asia/Kolkata');
+ // Set the default time zone for your backend
+
+// Export other functions or modules as needed
 
 
 const PatientAuthController = (
@@ -94,10 +103,23 @@ const PatientAuthController = (
   const getVideoAppointmentTime = async ( req,res) =>{
  try {
   console.log(req.query);
- const{id, convertedDate} =  req.query
- console.log(id, convertedDate,"jaiiii");
-  const appointmetTime = await AppointmentTime(id, convertedDate,dbRepository)
+ const{id, date} =  req.query
+ 
+ const inputDate = new Date(date);
+
+// Calculate the next day by adding 1 to the date
+inputDate.setDate(inputDate.getDate() + 1);
+console.log(inputDate,"new date");
+// const nextDayString = `"${inputDate.toISOString()}"`;
+
+const newDate = new Date(inputDate).toISOString()
+
+console.log(id,inputDate,newDate,"ddsafsdfadsf");
+
+  const appointmetTime = await AppointmentTime(id,newDate ,dbRepository)
+  
   console.log(appointmetTime,"haiiii");
+
   if (appointmetTime.Time.length === 0) {
     console.log("no appontment on this date");
     res.json({message:"No appontment on the selected date .Please choose another date ",noAppointment:true})
@@ -112,36 +134,48 @@ const PatientAuthController = (
  }
   }
 
-  const BookAppointment = (req,res) =>{
+  const BookAppointment =async(req,res) =>{
     try {
-      
       console.log(req.body,"body");
+      const {patientId,dateId,docId} = req.body
+      const BookedAppointment = await bookappointment(patientId,dateId,docId,dbRepository)
+      console.log(BookedAppointment,"appointment booked ");
+      res.json({appointmentBooked:true})
     } catch (error) {
       console.log(error);
     }
   }
-  const getPK = async (req,res) =>{
-    try {
-       const PrivateKey = await GetPk()
-       res.json({PrivateKey})
-    } catch (error) {
-      console.log(error);
+  // const getPK = async (req,res) =>{
+  //   try {
+  //      const PrivateKey = await GetPk()
+  //      res.json({PrivateKey})
+  //   } catch (error) {
+  //     console.log(error);
       
-    }
-  }
+  //   }
+  // }
   const CreateIntent = async(req,res) =>{
     try {
-      const price = req.body
-      console.log(price);
-      const Intent = await createIntent(price)
-      console.log(Intent);
-      res.json({Intent})
+    console.log(req.body);
+    const {time,PatietnId,id,name} = req.body
+    console.log(time,PatietnId,id,"contro");
+
+      const Intent = await createIntent(id,name)
+   
+          console.log(Intent);
+         res.json({Intent}) 
+     
+      
+      
+      
+      
+  
      
     } catch (error) {
       console.log(error);
     }
   }
-  return { createPatient, patientLogin,getDepartments,getDoctors,getDocDetails,getVideoAppointmentTime,BookAppointment,getPK,CreateIntent};
+  return { createPatient, patientLogin,getDepartments,getDoctors,getDocDetails,getVideoAppointmentTime,BookAppointment,CreateIntent};
 };
 
 export default PatientAuthController;

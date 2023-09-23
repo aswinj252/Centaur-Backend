@@ -9,26 +9,33 @@ const stripeInstance = stripe(Sk);
 
 
 
-const createIntent = async () =>{
-
-    const session = await stripeInstance.checkout.sessions.create({
-        line_items: [
-          {
-            price_data: {
-              currency: 'inr',
-              product_data: {
-                name: 'T-shirt',
-              },
-              unit_amount: 2000,
-            },
-            quantity: 1,
+const createIntent = async (id,name) =>{
+ 
+  const session = await stripeInstance.checkout.sessions.create({
+    line_items: [
+      {
+        price_data: {
+          currency: 'inr',
+          product_data: {
+            name: `Dr :${name}`,
           },
-        ],
-        mode: 'payment',
-        success_url: 'http://localhost:5173/success',
-        cancel_url: 'http://localhost:5173/cancel',
-      });
+          unit_amount: 60000,
+        },
+        quantity: 1,
+      },
+    ],
+    mode: 'payment',
+    success_url: 'http://localhost:5173/success',
+    cancel_url: `http://localhost:5173/videoBookingpage/${id}`,
+    metadata: {
+      date: '12346',
+      time: 'fsdfsdf'
+    }
+  });
 
+  
+  
+      console.log(session);
       return (session.url)
 
  }

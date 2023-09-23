@@ -16,7 +16,7 @@ const PatientAuthRouter = (express) =>{
     router.route('/docDetails/:id').get(controller.getDocDetails)
     router.route('/video_appointment').get(controller.getVideoAppointmentTime)
     router.route('/book_appointment'). post(controller.BookAppointment)
-    router.route('/publicKey').get(controller.getPK)
+    // router.route('/publicKey').get(controller.getPK)
     router.route('/create-checkout-session' ) .post(controller.CreateIntent)
     return router
 }

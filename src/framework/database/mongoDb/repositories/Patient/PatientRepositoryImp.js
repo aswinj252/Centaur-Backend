@@ -2,6 +2,7 @@ import Patient from "../../models/Patient.js";
 import Department from "../../models/Department.js";
 import Doctor from "../../models/DOctor.js";
 import ScheduleTime from "../../models/SplitTimes.js";
+import booking from "../../models/Booking.js";
 const PatientRepositoryImp = () => {
   const PatientExist = (email) => Patient.findOne({ email: email });
 
@@ -18,9 +19,22 @@ const PatientRepositoryImp = () => {
   const getDoctors = () => Doctor.find({reviewed:true,approved:true},{speciality:1,name:1,picture:1})
   const getDetails = ( id) => Doctor.findOne({_id:id},{speciality:1,picture:1,name:1,department:1})
   const GetTime = (id,date) => ScheduleTime.find({docId:id,date:date})
+  const Book = (timeId,docId) =>ScheduleTime.updateOne({_id:timeId,docId:docId},{$set:{booked:"true"}})
+  const Booked = (details) =>{
+    const BookingDetails = new booking({
+      patientId:details.getPatientId(),
+      docId:details.getDocId(),
+      timeId:details.gettimeId(),
+      booked:true
 
 
-  return { PatientExist, create ,getDepartments,getDoctors,getDetails,GetTime};
+    })
+    return BookingDetails.save();
+  };
+  
+
+
+  return { PatientExist, create ,getDepartments,getDoctors,getDetails,GetTime,Book,Booked};
 };
 
 export default PatientRepositoryImp;
