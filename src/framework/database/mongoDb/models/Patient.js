@@ -30,12 +30,16 @@ const patientSchema = new mongoose.Schema({
     required: true
   },
   
-  Appointment: {
-    type: mongoose.Schema.Types.ObjectId,
+  verified: {
+    type: Boolean,
+    default:false,
+    required:true
     
   },
-  report: {
-    type: mongoose.Schema.Types.ObjectId,
+  verifyToken: {
+    type: String,
+    default:null
+    
     
   },
   VideoData: {

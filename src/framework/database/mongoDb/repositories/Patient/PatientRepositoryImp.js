@@ -31,10 +31,13 @@ const PatientRepositoryImp = () => {
     })
     return BookingDetails.save();
   };
+  const update  = (id,token) =>Patient.updateOne({_id:id},{$set:{verifyToken:token}})
+  const DeleteData = (token) => Patient.deleteOne({verifyToken:token})
+  const Data = (token) => Patient.findOne({verifyToken:token})
   
 
 
-  return { PatientExist, create ,getDepartments,getDoctors,getDetails,GetTime,Book,Booked};
+  return { PatientExist, create ,getDepartments,getDoctors,getDetails,GetTime,Book,Booked,update,DeleteData,Data};
 };
 
 export default PatientRepositoryImp;
