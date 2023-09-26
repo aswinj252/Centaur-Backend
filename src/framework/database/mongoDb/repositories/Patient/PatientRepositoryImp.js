@@ -3,6 +3,7 @@ import Department from "../../models/Department.js";
 import Doctor from "../../models/DOctor.js";
 import ScheduleTime from "../../models/SplitTimes.js";
 import booking from "../../models/Booking.js";
+import { token } from "morgan";
 const PatientRepositoryImp = () => {
   const PatientExist = (email) => Patient.findOne({ email: email });
 
@@ -15,29 +16,52 @@ const PatientRepositoryImp = () => {
     });
     return newpatient.save();
   };
-  const getDepartments = () => Department.find({})
-  const getDoctors = () => Doctor.find({reviewed:true,approved:true},{speciality:1,name:1,picture:1})
-  const getDetails = ( id) => Doctor.findOne({_id:id},{speciality:1,picture:1,name:1,department:1})
-  const GetTime = (id,date) => ScheduleTime.find({docId:id,date:date})
-  const Book = (timeId,docId) =>ScheduleTime.updateOne({_id:timeId,docId:docId},{$set:{booked:"true"}})
-  const Booked = (details) =>{
+  const getDepartments = () => Department.find({});
+  const getDoctors = () =>
+    Doctor.find(
+      { reviewed: true, approved: true },
+      { speciality: 1, name: 1, picture: 1 }
+    );
+  const getDetails = (id) =>
+    Doctor.findOne(
+      { _id: id },
+      { speciality: 1, picture: 1, name: 1, department: 1 }
+    );
+  const GetTime = (id, date) => ScheduleTime.find({ docId: id, date: date });
+  const Book = (timeId, docId) =>
+    ScheduleTime.updateOne(
+      { _id: timeId, docId: docId },
+      { $set: { booked: "true" } }
+    );
+  const Booked = (details) => {
     const BookingDetails = new booking({
-      patientId:details.getPatientId(),
-      docId:details.getDocId(),
-      timeId:details.gettimeId(),
-      booked:true
-
-
-    })
+      patientId: details.getPatientId(),
+      docId: details.getDocId(),
+      timeId: details.gettimeId(),
+      booked: true,
+    });
     return BookingDetails.save();
   };
-  const update  = (id,token) =>Patient.updateOne({_id:id},{$set:{verifyToken:token}})
-  const DeleteData = (token) => Patient.deleteOne({verifyToken:token})
-  const Data = (token) => Patient.findOne({verifyToken:token})
-  
+  const update = (id, token) =>
+    Patient.updateOne({ _id: id }, { $set: { verifyToken: token } });
+  const DeleteData = (token) => Patient.deleteOne({ verifyToken: token });
+  const Data = (token) => Patient.findOne({ verifyToken: token });
+  const Verify = (token) => Patient.updateOne({verifyToken: token},{$set:{verified:true,verifyToken:null}})
 
-
-  return { PatientExist, create ,getDepartments,getDoctors,getDetails,GetTime,Book,Booked,update,DeleteData,Data};
+  return {
+    PatientExist,
+    create,
+    getDepartments,
+    getDoctors,
+    getDetails,
+    GetTime,
+    Book,
+    Booked,
+    update,
+    DeleteData,
+    Data,
+    Verify
+  };
 };
 
 export default PatientRepositoryImp;

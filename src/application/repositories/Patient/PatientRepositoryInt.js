@@ -13,12 +13,13 @@ const Booked = (BookingDetails) => repository.Booked(BookingDetails)
 const update = (id,token ) => repository.update(id,token)
 const DeleteData = (token ) => repository.DeleteData(token)
 const Data = (token ) => repository.Data(token )
+const Verify = (token) => repository.Verify(token)
     
     
     
 
 return {
-    PatientExist,Create,Departments,getDoctors,Details,GetTime,Book,Booked,update,DeleteData,Data
+    PatientExist,Create,Departments,getDoctors,Details,GetTime,Book,Booked,update,DeleteData,Data,Verify
 }
 
 }

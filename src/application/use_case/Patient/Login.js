@@ -5,9 +5,10 @@ const Login = async(email,password,repositories,authService,res) =>{
 
   const User = await repositories.PatientExist(email)
   console.log(User,"user");
-  const id = User._id.toString();
+  
 
   if(User !=null){
+    const id = User._id.toString();
     console.log(id,"id for jwt");
  
     const Password=await authService.comparePassword(password,User.password)

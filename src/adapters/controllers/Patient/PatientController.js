@@ -9,6 +9,7 @@ import createIntent from "../../../application/use_case/Patient/CreateIntent.js"
 import bookappointment from "../../../application/use_case/Patient/bookAppointment.js";
 import VerifyToken from "../../../application/use_case/Patient/VerifyEmail.js";
 import deleteDetails from "../../../application/use_case/Patient/DeleteDetails.js";
+import verified from "../../../application/use_case/Patient/Verify.js";
 
 // backend.js
 import moment from 'moment-timezone';
@@ -77,10 +78,12 @@ const PatientAuthController = (
       console.log(req.params);
       const token = req.params.token 
       const verify = await VerifyToken(token,authService)
+      console.log(verify,"verifyjhkjhjhkjkh");
     
       
   if (verify.verify.id) {
      
+   const verifying =   await verified(token,dbRepository)
      console.log("verififed","jkjjkjk");
      res.send(`<!DOCTYPE html>
      <html lang="en">
@@ -169,7 +172,7 @@ const PatientAuthController = (
                  <h2>Email Verified!</h2>
                  <p>Thank you for verifying your email address. You are now part of our community.</p>
                  <p>Click the button below to get started:</p>
-                 <a href="#" class="button">Get Started</a>
+                 <a href="http://localhost:5173/login" class="button">Get Started</a>
              </div>
          </div>
      </body>
@@ -181,12 +184,199 @@ const PatientAuthController = (
     const data = await GetData(token, dbRepository)
     console.log(data.data,"date");
     if (data.data === null) {
-      console.log("signup please");
+      res.send(`<!DOCTYPE html>
+     <html lang="en">
+     <head>
+         <meta charset="UTF-8">
+         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+         <title>Email Template</title>
+         <style>
+             /* Reset styles to ensure consistency across email clients */
+             body, table, td, a {
+                 -webkit-text-size-adjust: 100%;
+                 -ms-text-size-adjust: 100%;
+                 margin: 0;
+                 padding: 0;
+             }
+     
+             /* Set the background color of the email */
+             body {
+                 background-color: #f4f4f4;
+                 font-family: Arial, sans-serif;
+             }
+     
+             /* Ensure proper rendering in email clients */
+             table {
+                 border-collapse: collapse;
+                 mso-table-lspace: 0pt;
+                 mso-table-rspace: 0pt;
+             }
+     
+             /* Add some spacing and styling to the email container */
+             .email-container {
+                 max-width: 600px;
+                 margin: 0 auto;
+                 padding: 20px;
+             }
+     
+             /* Style the header with your logo or text */
+             .header {
+                 text-align: center;
+                 padding: 20px 0;
+             }
+     
+             /* Style the main content area */
+             .content {
+                 background-color: #ffffff;
+                 padding: 20px;
+                 border-radius: 5px;
+             }
+     
+             /* Style headings */
+             h1, h2 {
+                 color: #333;
+             }
+     
+             /* Style buttons */
+             .button {
+                 display: inline-block;
+                 background-color: #007bff;
+                 color: #ffffff;
+                 text-decoration: none;
+                 padding: 10px 20px;
+                 border-radius: 3px;
+             }
+     
+             /* Make sure the button is readable on different backgrounds */
+             .button:hover {
+                 background-color: #0056b3;
+             }
+     
+             /* Responsive styles */
+             @media screen and (max-width: 600px) {
+                 /* Center align the content when viewed on smaller screens */
+                 .email-container {
+                     width: 100%;
+                 }
+             }
+         </style>
+     </head>
+     <body>
+         <div class="email-container">
+             <div class="header">
+                 <!-- Add your logo or text here -->
+                 <h1>Your Company</h1>
+             </div>
+             <div class="content">
+                 <h2>Email Verification Failed</h2>
+                 <p>We're sorry, but your email verification token has expired or is invalid.</p>
+                 <p>Please signup again.</p>
+                 <a href="http://localhost:5173/signup" class="button">signup</a>
+             </div>
+         </div>
+     </body>
+     </html>
+     `)
+
       
     }
     else{
       await deleteDetails(token,dbRepository)
        console.log("details deleted");
+       res.send(`<!DOCTYPE html>
+     <html lang="en">
+     <head>
+         <meta charset="UTF-8">
+         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+         <title>Email Template</title>
+         <style>
+             /* Reset styles to ensure consistency across email clients */
+             body, table, td, a {
+                 -webkit-text-size-adjust: 100%;
+                 -ms-text-size-adjust: 100%;
+                 margin: 0;
+                 padding: 0;
+             }
+     
+             /* Set the background color of the email */
+             body {
+                 background-color: #f4f4f4;
+                 font-family: Arial, sans-serif;
+             }
+     
+             /* Ensure proper rendering in email clients */
+             table {
+                 border-collapse: collapse;
+                 mso-table-lspace: 0pt;
+                 mso-table-rspace: 0pt;
+             }
+     
+             /* Add some spacing and styling to the email container */
+             .email-container {
+                 max-width: 600px;
+                 margin: 0 auto;
+                 padding: 20px;
+             }
+     
+             /* Style the header with your logo or text */
+             .header {
+                 text-align: center;
+                 padding: 20px 0;
+             }
+     
+             /* Style the main content area */
+             .content {
+                 background-color: #ffffff;
+                 padding: 20px;
+                 border-radius: 5px;
+             }
+     
+             /* Style headings */
+             h1, h2 {
+                 color: #333;
+             }
+     
+             /* Style buttons */
+             .button {
+                 display: inline-block;
+                 background-color: #007bff;
+                 color: #ffffff;
+                 text-decoration: none;
+                 padding: 10px 20px;
+                 border-radius: 3px;
+             }
+     
+             /* Make sure the button is readable on different backgrounds */
+             .button:hover {
+                 background-color: #0056b3;
+             }
+     
+             /* Responsive styles */
+             @media screen and (max-width: 600px) {
+                 /* Center align the content when viewed on smaller screens */
+                 .email-container {
+                     width: 100%;
+                 }
+             }
+         </style>
+     </head>
+     <body>
+         <div class="email-container">
+             <div class="header">
+                 <!-- Add your logo or text here -->
+                 <h1>Your Company</h1>
+             </div>
+             <div class="content">
+                 <h2>Email Verification Failed</h2>
+                 <p>We're sorry, but your email verification token has expired or is invalid.</p>
+                 <p>Please signup again.</p>
+                 <a href="http://localhost:5173/signup" class="button">signup</a>
+             </div>
+         </div>
+     </body>
+     </html>
+     `)
+
     }
   
     
