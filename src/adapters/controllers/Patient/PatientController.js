@@ -10,8 +10,7 @@ import bookappointment from "../../../application/use_case/Patient/bookAppointme
 import VerifyToken from "../../../application/use_case/Patient/VerifyEmail.js";
 import deleteDetails from "../../../application/use_case/Patient/DeleteDetails.js";
 import verified from "../../../application/use_case/Patient/Verify.js";
-
-// backend.js
+import OtpSent from "../../../application/use_case/Patient/otp.js";
 import moment from 'moment-timezone';
 import GetData from "../../../application/use_case/Patient/Details.js";
 
@@ -25,10 +24,11 @@ const PatientAuthController = (
   PatientRepositoryInt,
   PatientRepositoryImp,
   authServiceInt,
-  authServiceImp
+  authServiceImp,mailServiceInt,mailServiceImp
 ) => {
   const dbRepository = PatientRepositoryInt(PatientRepositoryImp());
   const authService = authServiceInt(authServiceImp());
+  const mailService = mailServiceInt(mailServiceImp());
 
   const createPatient = async (req, res) => {
     try {
@@ -42,7 +42,8 @@ const PatientAuthController = (
         phone,
         password,
         dbRepository,
-        authService
+        authService,
+        mailService
       );
       
       res.json({ response });
@@ -77,7 +78,7 @@ const PatientAuthController = (
       
       console.log(req.params);
       const token = req.params.token 
-      const verify = await VerifyToken(token,authService)
+      const verify = await VerifyToken(token,authService,mailService)
       console.log(verify,"verifyjhkjhjhkjkh");
     
       
@@ -495,16 +496,47 @@ console.log(id,inputDate,newDate,"ddsafsdfadsf");
          res.json({Intent}) 
      
       
-      
-      
-      
-  
-     
     } catch (error) {
       console.log(error);
     }
   }
-  return { createPatient, patientLogin,getDepartments,getDoctors,getDocDetails,getVideoAppointmentTime,BookAppointment,CreateIntent,VerifyEmail};
+  const sentOtp = async(req,res) =>{
+    try {
+      console.log(req.body);
+      const {email} = req.body
+      const Otp = await OtpSent(email,dbRepository)
+      if (Otp.status===true) {
+        req.app.locals.otp = Otp.otp.OTP; 
+        req.app.locals.expires = Otp.otp.expiresin
+      }
+     
+      console.log(  req.app.locals.otp,"session");
+      console.log(Otp);
+      res.json({Otp})
+      
+    } catch (error) {
+      
+    }
+
+  }
+  const verifyOtp = async(req,res) =>{
+
+    try {
+      console.log(req.body);
+    console.log(  req.app.locals.otp,"fdsfsdf");  
+    console.log(req.app.locals.expires,"kkjkjkjkjk");
+    
+
+
+
+
+
+
+    } catch (error) {
+      
+    }
+  }
+  return { createPatient, patientLogin,getDepartments,getDoctors,getDocDetails,getVideoAppointmentTime,BookAppointment,CreateIntent,VerifyEmail,sentOtp,verifyOtp};
 };
 
 export default PatientAuthController;

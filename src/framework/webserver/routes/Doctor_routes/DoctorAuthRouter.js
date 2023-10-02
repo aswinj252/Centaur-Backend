@@ -2,8 +2,8 @@
 import DoctorAuthController from "../../../../adapters/controllers/Doctor/DoctorController.js" 
 import DoctorRepositoryImpl from "../../../database/mongoDb/repositories/Doctor/DoctorRepositoryImpl.js"
 import DoctorRepositoryInt from "../../../../application/repositories/Doctor/DoctorRepositoryInt.js"
-import authServiceInt from "../../../../application/Services/Doctor/authServiceInt.js"
-import authServiceImp from "../../../Services/Doctor/AuthService.js"
+import authServiceImp from "../../../Services/authServiceImp.js"
+import authServiceInt from "../../../../application/Services/authServiceInt.js"
 import single from "../../middlewares/multer.js"
 import auth from "../../middlewares/jwtVerify.js"
 

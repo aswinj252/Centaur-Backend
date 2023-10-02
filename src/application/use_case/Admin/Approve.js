@@ -1,8 +1,9 @@
-const Approve = async(id,repository) =>{
-   const data = await repository.Data(id)
- const approve = await repository.Approve(id)
- if (approve) {
-    return({status:true,data,message:"Doctor Approved"})
- }
-}
-export default Approve
+const Approve = async (id, Dbrepository, mailService) => {
+  const data = await Dbrepository.Data(id);
+  await Dbrepository.Approve(id);
+
+  await mailService.SentMail(data.name, data.email);
+
+  return { status: true, message: "Doctor Approved" };
+};
+export default Approve;

@@ -6,24 +6,26 @@ const addDepartment = async (department,description,picture,dbRepository ) =>{
     return dbRepository.depExist(department).then(async (Department) =>{
         if(!Department){
 
-            const S3 = new S3Client({
-                credentials: {
-                  accessKeyId: config.accessKey,
-                  secretAccessKey: config.secret,
-                },
-                region: config.region,  
-              });
+            // const S3 = new S3Client({
+            //     credentials: {
+            //       accessKeyId: config.accessKey,
+            //       secretAccessKey: config.secret,
+            //     },
+            //     region: config.region,  
+            //   });
 
-              const params = {
-                Bucket: config.Bucketname,
-                Key: picture.originalname,
-                Body: picture.buffer,
-                contentType: picture.mimetype,
-              };
+            //   const params = {
+            //     Bucket: config.Bucketname,
+            //     Key: picture.originalname,
+            //     Body: picture.buffer,
+            //     contentType: picture.mimetype,
+            //   };
 
-              const command = new PutObjectCommand(params);
-              await S3.send(command);
+            //   const command = new PutObjectCommand(params);
+            //   await S3.send(command);
 
+
+            
             const depDetails = AddDepartment(department,description,picture.originalname);
             dbRepository.Create(depDetails);
         console.log("true");

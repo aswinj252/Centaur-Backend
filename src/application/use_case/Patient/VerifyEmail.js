@@ -1,5 +1,6 @@
 const VerifyToken = async (token,authRepository) =>{
-    const verify = await authRepository.verify(token)
+    const verify = await authRepository.verifyToken(token)
+    
     console.log(verify);
     return ({verify})
 }

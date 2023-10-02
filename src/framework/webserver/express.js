@@ -1,26 +1,11 @@
-// import express from "express";
-// import morgan from 'morgan'
-// import cors from 'cors'
-// import helmet from "helmet";
-// import cookieParser from 'cookie-parser';
 
-// export default function expressConfig(app) {
-
-//     app.use(cors())
-//     app.use(morgan('dev'));
-//     app.use(express.json());
-//     app.use(express.urlencoded({ extended: true }));
-//     app.use(helmet({ xssFilter: true }))
-//     app.use(cookieParser()); 
- 
-
-// }
 
 import express from "express";
 import morgan from 'morgan';
 import cors from 'cors';
 import helmet from "helmet";
 import cookieParser from 'cookie-parser';
+import session from "express-session";
 
 export default function expressConfig(app) {
     // CORS configuration
@@ -35,4 +20,9 @@ export default function expressConfig(app) {
     app.use(express.urlencoded({ extended: true }));
     app.use(helmet({ xssFilter: true }));
     app.use(cookieParser());
+    app.use(session({
+        secret: 'sessionsecret',
+        resave: false,
+        saveUninitialized: true,
+      }));
 }

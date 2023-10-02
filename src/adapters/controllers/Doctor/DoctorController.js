@@ -99,7 +99,7 @@ const DoctorAuthController = (
      const  decodedToken =  authService.verifyRefresh(refreshToken)
      console.log(decodedToken,"refresh1111");
  if (decodedToken && decodedToken.status !== true){
- const newToken = authService.CreateNewToken(decodedToken.id)
+ const newToken = authService.createAccessToken(decodedToken.id)
      console.log(newToken,"454545454545454");
        return res.json({ message: "token expired and new token is " ,newToken });
  }

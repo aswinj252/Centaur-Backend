@@ -1,12 +1,11 @@
-const Reject = async(id,repository) =>{
+const Reject = async(id,repository,mailService) =>{
     const data = await repository.Data(id)
-    console.log(id,"ididididididididi");
-    const reject = await repository.Reject(id)
-    if (reject) {
+     await repository.Reject(id)
+     await mailService.rejectApplication(data.name, data.email)
       
         
-        return ({status:true, data , message:"Application rejected"})
-    }
+        return ({status:true, message:"Application rejected"})
+   
 
 }
 export default Reject
